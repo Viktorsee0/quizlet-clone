@@ -29,7 +29,6 @@
         flex: 1 0 auto;
         display: flex;
         justify-content: center;
-        align-items: center;
     }
     .footer {
         flex: 0 0 auto;
@@ -46,7 +45,23 @@
     <th:block th:replace="fragments/header :: header"></th:block>
     <div class="content">
         <div layout:fragment="content" style="width: 70%">
-            <p>Body contents</p>
+
+            <div class="d-flex">
+                <div th:each="folder: ${folders}">
+
+                    <form th:action="@{/folder/show/{id} (id = ${folder.id})}"  th:object="${folder}" method="get">
+
+                        <button type="submit" class="btn ">
+                            <img src="https://img.icons8.com/color/96/000000/pink-cute-folder.png"/>
+                            <div th:text="${folder.title}"></div>
+                            <div th:text="${folder.description}"></div>
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="footer">

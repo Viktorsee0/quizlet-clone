@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Authorization</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    height: 100%;
+    align-content: center;
+  }
+  .wrapper{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  form{
+    width: 50%;
+    border: rgba(59, 94, 125, 0.58) 1px solid;
+    padding: 10px;
+    border-radius: 30px;
+  }
+</style>
+<div class="wrapper">
+  <form th:action="@{/auth}"  method="post">
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input name="username" type="text" class="form-control" id="email" placeholder="name@example.com">
+<!--      <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fs-6 text-danger fw-lighter">Incorrect date</p>-->
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input name="password" type="password" class="form-control" id="password" rows="3">
+<!--      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fs-6 text-danger fw-lighter">Incorrect date</p>-->
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+      <p th:text="${message}"></p>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

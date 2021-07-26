@@ -15,6 +15,11 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "term")
     private String term;
+
+    @Column(name = "definition")
     private String definition;
+
 }

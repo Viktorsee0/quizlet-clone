@@ -30,6 +30,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100%;
+        width: 100%;
     }
     .footer {
         flex: 0 0 auto;
@@ -40,13 +42,43 @@
         padding: 0;
         margin: 0 30px 0 0;
     }
+
+    .row{
+        width: 100%;
+    }
+
 </style>
 
 <div class="wrapper">
     <th:block th:replace="fragments/header :: header"></th:block>
     <div class="content">
-        <div layout:fragment="content" style="width: 70%">
-            <p>Body contents</p>
+        <div layout:fragment="content" class="d-flex flex-column justify-content-between" style="width: 70%; align-items: center">
+            <div>
+                <h1 th:text="${folder.title}"></h1>
+                <h3 th:text="${folder.description}"></h3>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6" th:each="model :${models}">
+                    <div class="card">
+                        <div class="card-body" th:object="${model}">
+                            <h5 class="card-title" th:text="*{name}">Special title treatment</h5>
+                            <p class="card-text" th:text="*{description}">With supporting text below as a natural lead-in to additional content.</p>
+                            <a class="btn btn-primary" th:href="@{/model/show/{id} (id = *{id})}">Go somewhere</a>
+                            <a class="btn btn-primary" th:href="@{/folder/show/{fId}/delete/{mId} (fId = ${folder.id}, mId = ${model.id})}">del</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form th:action="@{http://localhost:8080/folder/show/{fId}/add (fId = ${id})}"  th:object="${folder}" method="get">
+
+                <button type="submit" class="btn ">
+                    ДОБАВИТЬ МОДУЛЬ
+                </button>
+
+            </form>
         </div>
     </div>
     <div class="footer">

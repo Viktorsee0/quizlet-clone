@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100%;
+    }
+
+    .content {
+        flex: 1 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer {
+        flex: 0 0 auto;
+    }
+
+    .logo-text {
+        text-align: center;
+        font-size: 25px;
+        padding: 0;
+        margin: 0 30px 0 0;
+    }
+</style>
+
+<div class="wrapper">
+    <th:block th:replace="fragments/header :: header"></th:block>
+    <div class="content">
+        <div th:object="${model}" layout:fragment="content" style="width: 70%">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+                    <h4 th:text="*{name}"></h4>
+                    <h5 th:text="*{description}"></h5>
+                </div>
+
+                <div>
+
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Change
+                    </button>
+                    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
+                         id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Settings</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                                   data-bs-toggle="modal" data-bs-target="#first">
+                                    Change title and descr
+                                </a>
+
+                                <div class="modal fade" id="first" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Change title and
+                                                    descr</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <form th:action="@{/model/changeTitle/{mId} (mId = *{id})}" method="POST">
+
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="title" class="form-label">НАЗВАНИЕ</label>
+                                                        <input th:field="${dto.name}" th:value="${model.name}"
+                                                               type="text" class="form-control" id="title"
+                                                               aria-describedby="emailHelp">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="descr" class="form-label">ОПИСАНИЕ</label>
+                                                        <input th:field="${dto.description}"
+                                                               th:value="${model.description}" type="text"
+                                                               class="form-control" id="descr">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-primary">Save changes</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                                   data-bs-toggle="modal" data-bs-target="#second">Add card</a>
+
+                                <div class="modal fade" id="second" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel1">Add card</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <form th:action="@{/model/addCard/{mId} (mId = *{id})}" th:object="${card}"
+                                                  method="POST">
+
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="term" class="form-label">НАЗВАНИЕ</label>
+                                                        <input th:field="*{term}"
+                                                               type="text" class="form-control" id="term"
+                                                               aria-describedby="emailHelp">
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label for="definition" class="form-label">ОПИСАНИЕ</label>
+                                                        <input th:field="*{definition}"
+                                                               type="text"
+                                                               class="form-control" id="definition">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-primary">Save changes</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <a href="#" class="list-group-item list-group-item-action" aria-current="true"
+                                   data-bs-toggle="modal" data-bs-target="#three">Remove cards</a>
+
+                                <div class="modal fade" id="three" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel3">Add card</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+
+                                            <ul th:object="${card}" class="list-group list-group-flush">
+
+                                                <li class="list-group-item">
+                                                    <span th:field="*{term}"></span>
+                                                    <span th:field="*{definition}"></span>
+                                                    <a th:action="@{/model/removeCard/{mId}/{cId} (mId = ${model.id} , cId =${card.id})}" class="btn-close" aria-label="Close"></a>
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                </div>
+                <div th:each="card :*{cards}" class="carousel-inner">
+
+                    <div th:object="${card}" class="carousel-item active">
+                        <img src="..." class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 th:field="*{term}"></h5>
+                            <p th:field="*{definition}"></p>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer">
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

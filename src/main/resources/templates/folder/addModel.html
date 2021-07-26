@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Главная страница</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+  }
+  .content {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer {
+    flex: 0 0 auto;
+  }
+  .logo-text{
+    text-align: center;
+    font-size: 25px;
+    padding: 0;
+    margin: 0 30px 0 0;
+  }
+</style>
+
+<div class="wrapper">
+  <th:block th:replace="fragments/header :: header"></th:block>
+  <div class="content">
+    <div layout:fragment="content" style="width: 70%">
+
+      <div class="row">
+        <div class="col-sm-6" th:each="model :${models}">
+          <div class="card">
+            <div class="card-body" th:object="${model}">
+              <h5 class="card-title" th:text="*{name}">Special title treatment</h5>
+              <p class="card-text" th:text="*{description}">With supporting text below as a natural lead-in to additional content.</p>
+              <a class="btn btn-primary" th:href="@{/folder/show/{fId}/add/{mId} (fId = ${id}, mId = ${model.id})}">Add</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer">
+    <th:block th:replace="fragments/footer :: footer"></th:block>
+  </div>
+</div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
