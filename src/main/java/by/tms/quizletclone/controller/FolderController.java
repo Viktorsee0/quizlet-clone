@@ -5,7 +5,6 @@ import by.tms.quizletclone.entity.LearnModel;
 import by.tms.quizletclone.entity.User;
 import by.tms.quizletclone.service.FolderService;
 import by.tms.quizletclone.service.ModelService;
-import by.tms.quizletclone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,13 +22,11 @@ public class FolderController {
 
     private final FolderService folderService;
     private final ModelService modelService;
-    private final UserService userService;
 
     @Autowired
-    public FolderController(FolderService folderService, ModelService modelService, UserService userService) {
+    public FolderController(FolderService folderService, ModelService modelService) {
         this.folderService = folderService;
         this.modelService = modelService;
-        this.userService = userService;
     }
 
     @PostMapping("/create")
@@ -73,9 +70,6 @@ public class FolderController {
 
     @GetMapping("/show/{fId}/delete/{mId}")
     public String deleteModule(@PathVariable long fId, @PathVariable long mId) {
-        System.out.println(123);
-        System.out.println(fId);
-        System.out.println(mId);
         folderService.delete(mId);
         return "redirect:/folder/show/" + fId;
     }

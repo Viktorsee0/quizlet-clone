@@ -31,12 +31,12 @@ public class ModelController {
     private String uploadPath;
 
     private final ModelService modelService;
-    private final CardService cardService;
+    private final CardService cardServiceImpl;
 
     @Autowired
-    public ModelController(ModelService modelService, CardService cardService) {
+    public ModelController(ModelService modelService, CardService cardServiceImpl) {
         this.modelService = modelService;
-        this.cardService = cardService;
+        this.cardServiceImpl = cardServiceImpl;
     }
 
     @GetMapping("create")
@@ -47,7 +47,9 @@ public class ModelController {
 
 
     @PostMapping("create")
-    public RedirectView createModel(@AuthenticationPrincipal User user, @ModelAttribute("model") LearnModel learnModel) {
+    public RedirectView createModel(@AuthenticationPrincipal User user,
+                                    @ModelAttribute("model") LearnModel learnModel) {
+
         modelService.save(learnModel, user);
         return new RedirectView("/");
     }
@@ -57,27 +59,24 @@ public class ModelController {
                           @ModelAttribute("card") Card card,
                           @RequestParam("file") MultipartFile file) throws IOException {
 
-        if (file != null) {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
 
-            System.out.println(file.getOriginalFilename());
-
-            File dir = new File(uploadPath);
-
-            if (!dir.exists()) {
-                dir.mkdir();
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
             }
 
             String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
 
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
+            file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            card.setFilename(resultFileName);
+            card.setFilename(resultFilename);
         }
 
-        cardService.create(card, id);
+
+        cardServiceImpl.create(card, id);
         return "redirect:/model/show/" + id;
-//        return "models/model";
     }
 
     @GetMapping("show")
@@ -93,7 +92,7 @@ public class ModelController {
     public String showModel(Model model, @PathVariable long id) {
 
         LearnModel allModels = modelService.getAll(id);
-        List<Card> allCards = cardService.getAll(id);
+        List<Card> allCards = cardServiceImpl.getAll(id);
 
         model.addAttribute("model", allModels);
         model.addAttribute("dto", new ModelChangeDTO());
@@ -120,7 +119,7 @@ public class ModelController {
     @GetMapping("{mId}/removeCard/{cId}")
     public String removeCard(Model model, @PathVariable long cId, @PathVariable long mId) {
 
-        cardService.delete(cId);
+        cardServiceImpl.delete(cId);
 
         return "redirect:/model/show/" + mId;
     }

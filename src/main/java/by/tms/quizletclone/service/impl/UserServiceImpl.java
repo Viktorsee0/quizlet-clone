@@ -1,10 +1,12 @@
-package by.tms.quizletclone.service;
+package by.tms.quizletclone.service.impl;
 
 import by.tms.quizletclone.dto.UserRegDTO;
 import by.tms.quizletclone.entity.Role;
 import by.tms.quizletclone.entity.User;
 import by.tms.quizletclone.mapper.UserMapper;
 import by.tms.quizletclone.repository.UserRepository;
+import by.tms.quizletclone.service.MailSender;
+import by.tms.quizletclone.service.UserService;
 import by.tms.quizletclone.service.excpetion.PasswordException;
 import by.tms.quizletclone.service.excpetion.SuchUserIsPresentAlreadyException;
 import by.tms.quizletclone.service.excpetion.UserIsDeletedException;
@@ -80,6 +82,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     }
 
+    @Override
     public void activateUser(String code) {
        User user = userRepository.findByActivationCode(code);
        user.setActivationCode(null);
@@ -87,23 +90,5 @@ public class UserServiceImpl implements UserDetailsService, UserService {
        userRepository.save(user);
     }
 
-
-//
-//
-//    @Override
-//    public User getUserById(long id) {
-//        return userRepository.findById(id);
-//    }
-//
-//    @Override
-//    public void setUserDeleted(User user){
-//        user.setDeleted(true);
-//        userRepository.save(user);
-//    }
-//
-//    @Override
-//    public void setUserNotDeleted(String username){
-//        userRepository.findByUsername(username).setDeleted(false);
-//    }
 
 }
