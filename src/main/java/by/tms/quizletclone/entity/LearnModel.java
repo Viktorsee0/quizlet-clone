@@ -7,8 +7,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "MODELS")
@@ -25,9 +23,9 @@ public class LearnModel {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "model_id")
-    private List<Card> cards;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "model_id")
+//    private List<Card> cards;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
             fetch = FetchType.EAGER)
@@ -42,11 +40,11 @@ public class LearnModel {
     private Folder folder;
 
 
-    public void addCard(Card card){
-        if (cards == null){
-            cards = new ArrayList<>();
-        }
-
-        cards.add(card);
-    }
+//    public void addCard(Card card){
+//        if (cards == null){
+//            cards = new ArrayList<>();
+//        }
+//
+//        cards.add(card);
+//    }
 }

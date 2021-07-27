@@ -18,16 +18,21 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final MailSender mailSender;
 
-    public UserServiceImpl(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserServiceImpl(@Lazy PasswordEncoder passwordEncoder,
+                           UserRepository userRepository,
+                           MailSender mailSender) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.mailSender = mailSender;
     }
 
 
@@ -56,12 +61,30 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             roles.add(Role.USER);
             user.setRoles(roles);
 
+            user.setActivationCode(UUID.randomUUID().toString());
+
             userRepository.save(user);
+
+            String message = String.format(
+                    "Hello!\n" +
+                    "Welcome to ... \n" +
+                            "Please, visit next link:       <a href='http://localhost:8080/activate/%s'> http://localhost:8080/activate </a> ",
+                    user.getActivationCode()
+            );
+            mailSender.send(user.getEmail(), "Activation code", message);
+
+
         } else {
             throw new SuchUserIsPresentAlreadyException("User with this email already exists");
         }
-        ;
 
+    }
+
+    public void activateUser(String code) {
+       User user = userRepository.findByActivationCode(code);
+       user.setActivationCode(null);
+       user.setActive(true);
+       userRepository.save(user);
     }
 
 

@@ -4,28 +4,39 @@ import by.tms.quizletclone.dto.ModelChangeDTO;
 import by.tms.quizletclone.entity.Card;
 import by.tms.quizletclone.entity.LearnModel;
 import by.tms.quizletclone.entity.User;
+import by.tms.quizletclone.service.CardService;
 import by.tms.quizletclone.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 
 @Controller
 @RequestMapping("model")
 public class ModelController {
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     private final ModelService modelService;
+    private final CardService cardService;
 
     @Autowired
-    public ModelController(ModelService modelService) {
+    public ModelController(ModelService modelService, CardService cardService) {
         this.modelService = modelService;
+        this.cardService = cardService;
     }
 
     @GetMapping("create")
@@ -41,18 +52,32 @@ public class ModelController {
         return new RedirectView("/");
     }
 
-//    @GetMapping("addCard/{id}")
-//    public String addCard(Model model, @PathVariable long id) {
-//        model.addAttribute("card", new Card());
-//        model.addAttribute("id", id);
-//        return "models/addCard";
-//    }
-
     @PostMapping("addCard/{id}")
     public String addCard(@PathVariable long id,
-                          @ModelAttribute("card") Card card) {
-        modelService.addCard(id, card);
-        return "models/addCard";
+                          @ModelAttribute("card") Card card,
+                          @RequestParam("file") MultipartFile file) throws IOException {
+
+        if (file != null) {
+
+            System.out.println(file.getOriginalFilename());
+
+            File dir = new File(uploadPath);
+
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFileName));
+
+            card.setFilename(resultFileName);
+        }
+
+        cardService.create(card, id);
+        return "redirect:/model/show/" + id;
+//        return "models/model";
     }
 
     @GetMapping("show")
@@ -67,9 +92,12 @@ public class ModelController {
     @GetMapping("show/{id}")
     public String showModel(Model model, @PathVariable long id) {
 
-        LearnModel all = modelService.getAll(id);
-        model.addAttribute("model", all);
+        LearnModel allModels = modelService.getAll(id);
+        List<Card> allCards = cardService.getAll(id);
+
+        model.addAttribute("model", allModels);
         model.addAttribute("dto", new ModelChangeDTO());
+        model.addAttribute("cards", allCards);
         model.addAttribute("card", new Card());
 
         return "models/model";
@@ -89,12 +117,12 @@ public class ModelController {
         return "redirect:/model/show/" + id;
     }
 
-    @GetMapping("removeCard/{mId}/{cId}")
-    public String removeCard(Model model, @PathVariable long mId, @PathVariable long cId) {
+    @GetMapping("{mId}/removeCard/{cId}")
+    public String removeCard(Model model, @PathVariable long cId, @PathVariable long mId) {
 
+        cardService.delete(cId);
 
-
-        return "models/model";
+        return "redirect:/model/show/" + mId;
     }
 
 }

@@ -21,7 +21,8 @@ public class User implements UserDetails {
     private long id;
     private String email;
     private String password;
-//    private boolean deleted;
+    private boolean active;
+    private String activationCode;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)

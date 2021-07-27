@@ -28,23 +28,23 @@ public class ModelService {
         this.cardRepository = cardRepository;
     }
 
-    public LearnModel save(LearnModel learnModel, User user) {
+    public void save(LearnModel learnModel, User user) {
         learnModel.setUser(user);
-        return modelRepository.save(learnModel);
+        modelRepository.save(learnModel);
     }
 
-    public void addCard(long id, Card card) {
-        card.setId(0L);
+//    public void addCard(long id, Card card) {
+//        card.setId(0L);
+//
+//        Optional<LearnModel> byId = modelRepository.findById(id);
+//
+//        if (byId.isPresent()) {
+//            LearnModel learnModel = byId.get();
+//            learnModel.addCard(card);
+//            modelRepository.save(learnModel);
+//        }
 
-        Optional<LearnModel> byId = modelRepository.findById(id);
-
-        if (byId.isPresent()) {
-            LearnModel learnModel = byId.get();
-            learnModel.addCard(card);
-            modelRepository.save(learnModel);
-        }
-
-    }
+//    }
 
     public LearnModel getAll(long id) {
         return modelRepository.findById(id).get();
