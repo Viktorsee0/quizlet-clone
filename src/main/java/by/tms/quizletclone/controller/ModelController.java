@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.io.File;
@@ -47,17 +46,26 @@ public class ModelController {
 
 
     @PostMapping("create")
-    public RedirectView createModel(@AuthenticationPrincipal User user,
-                                    @ModelAttribute("model") LearnModel learnModel) {
+    public String createModel(@AuthenticationPrincipal User user,
+                                    @ModelAttribute("model") @Valid LearnModel learnModel,
+                                    BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "models/modelCreate";
+        }
 
         modelService.save(learnModel, user);
-        return new RedirectView("/");
+        return "redirect:/";
     }
 
     @PostMapping("addCard/{id}")
     public String addCard(@PathVariable long id,
-                          @ModelAttribute("card") Card card,
-                          @RequestParam("file") MultipartFile file) throws IOException {
+                          @ModelAttribute("card") @Valid Card card,
+                          @RequestParam("file") MultipartFile file,
+                          BindingResult bindingResult) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            return "models/model";
+        }
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);

@@ -1,4 +1,4 @@
-package by.tms.quizletclone.service;
+package by.tms.quizletclone.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;

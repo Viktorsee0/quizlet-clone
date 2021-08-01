@@ -1,9 +1,10 @@
 package by.tms.quizletclone.service;
 
 import by.tms.quizletclone.dto.UserRegDTO;
+import by.tms.quizletclone.entity.User;
 
 public interface UserService {
 
-    void registration(UserRegDTO userRegDTO);
+    User registration(UserRegDTO userRegDTO);
     void activateUser(String code);
 }

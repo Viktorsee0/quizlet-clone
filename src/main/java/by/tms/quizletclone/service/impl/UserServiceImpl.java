@@ -5,7 +5,6 @@ import by.tms.quizletclone.entity.Role;
 import by.tms.quizletclone.entity.User;
 import by.tms.quizletclone.mapper.UserMapper;
 import by.tms.quizletclone.repository.UserRepository;
-import by.tms.quizletclone.service.MailSender;
 import by.tms.quizletclone.service.UserService;
 import by.tms.quizletclone.service.excpetion.PasswordException;
 import by.tms.quizletclone.service.excpetion.SuchUserIsPresentAlreadyException;
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void registration(UserRegDTO userRegDTO) {
+    public User registration(UserRegDTO userRegDTO) {
 
         if (!userRegDTO.getPassword().equals(userRegDTO.getConfirmPassword())) {
             throw new PasswordException("Password mismatch");
@@ -55,8 +54,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         Optional<User> byEmail = userRepository.findByEmail(userRegDTO.getEmail());
 
+        User user;
+
         if (byEmail.isEmpty()) {
-            User user = UserMapper.INSTANCE.toUser(userRegDTO);
+            user = UserMapper.INSTANCE.toUser(userRegDTO);
 
             user.setPassword(passwordEncoder.encode(userRegDTO.getPassword()));
             HashSet<Role> roles = new HashSet<>();
@@ -70,16 +71,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             String message = String.format(
                     "Hello!\n" +
                     "Welcome to ... \n" +
-                            "Please, visit next link:       <a href='http://localhost:8080/activate/%s'> http://localhost:8080/activate </a> ",
+                            "Please, visit next link: http://localhost:8080/activate/%s",
                     user.getActivationCode()
             );
             mailSender.send(user.getEmail(), "Activation code", message);
-
 
         } else {
             throw new SuchUserIsPresentAlreadyException("User with this email already exists");
         }
 
+        return user;
     }
 
     @Override

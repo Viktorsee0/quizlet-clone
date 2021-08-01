@@ -36,13 +36,18 @@
         align-items: center;
         flex-direction: column;
     }
-    img{
+
+    img {
         max-width: 100px;
         max-height: 70px;
     }
 
     .footer {
         flex: 0 0 auto;
+    }
+
+    .f{
+        max-width: 30%;
     }
 
 </style>
@@ -59,160 +64,96 @@
 
             <div>
 
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Change
-                </button>
-                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
-                     id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Settings</h5>
-                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
+                <a href="#" class="btn-primary" aria-current="true"
+                   data-bs-toggle="modal" data-bs-target="#first">
+                    Change title and descr
+                </a>
 
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                               data-bs-toggle="modal" data-bs-target="#first">
-                                Change title and descr
-                            </a>
+                <div class="modal fade" id="first" tabindex="-1"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Change title and
+                                    descr</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <form th:action="@{/model/changeTitle/{mId} (mId = *{id})}" method="POST">
 
-                            <div class="modal fade" id="first" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Change title and
-                                                descr</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <form th:action="@{/model/changeTitle/{mId} (mId = *{id})}" method="POST">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">НАЗВАНИЕ</label>
+                                        <input th:field="${dto.name}" th:value="${model.name}"
+                                               type="text" class="form-control" id="title"
+                                               aria-describedby="emailHelp">
+                                    </div>
 
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label for="title" class="form-label">НАЗВАНИЕ</label>
-                                                    <input th:field="${dto.name}" th:value="${model.name}"
-                                                           type="text" class="form-control" id="title"
-                                                           aria-describedby="emailHelp">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="descr" class="form-label">ОПИСАНИЕ</label>
-                                                    <input th:field="${dto.description}"
-                                                           th:value="${model.description}" type="text"
-                                                           class="form-control" id="descr">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-primary">Save changes</button>
-                                            </div>
-
-                                        </form>
+                                    <div class="mb-3">
+                                        <label for="descr" class="form-label">ОПИСАНИЕ</label>
+                                        <input th:field="${dto.description}"
+                                               th:value="${model.description}" type="text"
+                                               class="form-control" id="descr">
                                     </div>
                                 </div>
-                            </div>
-
-
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                               data-bs-toggle="modal" data-bs-target="#second">Add card</a>
-
-                            <div class="modal fade" id="second" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel1">Add card</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <form th:action="@{/model/addCard/{mId} (mId = ${model.id})}"
-                                              th:object="${card}"
-                                              method="POST"
-                                              enctype="multipart/form-data">
-
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label for="term" class="form-label">НАЗВАНИЕ</label>
-                                                    <input th:field="*{term}"
-                                                           type="text" class="form-control" id="term"
-                                                           aria-describedby="emailHelp">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="definition" class="form-label">ОПИСАНИЕ</label>
-                                                    <input th:field="*{definition}"
-                                                           type="text"
-                                                           class="form-control" id="definition">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="img" class="form-label">ОПИСАНИЕ</label>
-                                                    <input name="file"
-                                                           type="file"
-                                                           class="form-control" id="img">
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button class="btn btn-primary">Save changes</button>
-                                            </div>
-
-                                        </form>
-                                    </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary">Save changes</button>
                                 </div>
-                            </div>
 
-
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true"
-                               data-bs-toggle="modal" data-bs-target="#three">Remove cards</a>
-
-                            <div class="modal fade" id="three" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel3">Add card</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-
-                                        <ul th:each="rCard :${cards}" class="list-group list-group-flush">
-
-                                            <li class="list-group-item">
-                                                <span>
-                                                 <img th:src="@{/img/{filename} (filename =${rCard.filename})}">
-                                                </span>
-                                                <span th:text="${rCard.term}"></span>
-                                                <span> - </span>
-                                                <span th:text="${rCard.definition}"></span>
-                                                <a th:href="@{/model/{mId}/removeCard/{cId} (cId =${rCard.id}, mId =${model.id})}"
-                                                   class="btn-close" aria-label="Close"></a>
-                                            </li>
-
-                                        </ul>
-
-                                    </div>
-                                </div>
-                            </div>
-
-
+                            </form>
                         </div>
-
                     </div>
                 </div>
+
             </div>
 
         </div>
 
-        <ul th:each="mCard :${cards}" class="list-group list-group-flush">
-            <li class="list-group-item">
+        <form class="f" th:action="@{/model/addCard/{mId} (mId = ${model.id})}"
+              th:object="${card}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <div class="modal-body">
+                <div>
+                    <label for="term" class="form-label"></label>
+                    <input th:field="*{term}"
+                           type="text" class="form-control" id="term"
+                           aria-describedby="emailHelp" placeholder="term">
+                </div>
+
+                <div>
+                    <label for="definition" class="form-label"></label>
+                    <input th:field="*{definition}"
+                           type="text"
+                           class="form-control" id="definition" placeholder="translate">
+                </div>
+
+                <div>
+                    <label for="img" class="form-label"></label>
+                    <input name="file"
+                           type="file"
+                           class="form-control" id="img" placeholder="img
+">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">Save changes</button>
+            </div>
+
+        </form>
+
+        <ul class="list-group list-group-flush">
+            <li th:each="mCard :${cards}" class="list-group-item">
                 <span th:if="${mCard.filename}">
                     <img th:src="@{/img/{filename} (filename =${mCard.filename})}">
                 </span>
                 <span th:text="${mCard.term}"></span>
                 <span> - </span>
                 <span th:text="${mCard.definition}"></span>
+                <a th:href="@{/model/{mId}/removeCard/{cId} (cId =${mCard.id}, mId =${model.id})}"
+                   class="btn-close" aria-label="Close"></a>
             </li>
         </ul>
 

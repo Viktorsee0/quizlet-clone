@@ -5,6 +5,7 @@ import by.tms.quizletclone.entity.Folder;
 import by.tms.quizletclone.entity.User;
 import by.tms.quizletclone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,26 +15,27 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping
-public class MainController {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public MainController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/")
-    public String getMain(Model model) {
+    public String getMain(Model model, @AuthenticationPrincipal User user) {
+        String substring = user.getEmail().substring(0, user.getEmail().indexOf('@'));
+        model.addAttribute("username", substring);
         model.addAttribute("folder", new Folder());
         return "index";
     }
 
-    @GetMapping(path = "/auth")
+    @GetMapping(path = "/login")
     public String getAuthorizationPage(Model model) {
-
         model.addAttribute("user", new User());
-        return "authorization/auth";
+        return "authorization/login";
     }
 
     @GetMapping(path = "/reg")
@@ -59,7 +61,7 @@ public class MainController {
             return "authorization/registration";
         }
 
-        return "authorization/auth";
+        return "authorization/login";
 
     }
 

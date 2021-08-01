@@ -1,96 +1,103 @@
-
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Header</title>
+    <meta charset="UTF-8"/>
+    <title>Header</title>
 </head>
 <body>
 <header class="p-3" th:fragment="header" style="background-color: rgba(0, 0, 0, 0.5);">
-  <div class="container" style="max-width: 90%">
+    <div class="container" style="max-width: 90%">
 
-    <div class="d-flex justify-content-between">
-      <div>
+        <div class="d-flex justify-content-between">
+            <div>
 
-        <a class="btn btn-secondary" href="/" role="button">Главная</a>
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Ваша библиотека
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/model/show">Учебные модули</a></li>
-            <li><a class="dropdown-item" href="/folder/show">Папки</a></li>
-          </ul>
+                <a class="btn btn-secondary" href="/" role="button">Главная</a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Ваша библиотека
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/model/show">Учебные модули</a></li>
+                        <li><a class="dropdown-item" href="/folder/show">Папки</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Создать
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/model/create">Учебный модуль</a></li>
+                        <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Папку
+                        </button>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="d-flex justify-content-end" style="height: 38px">
+
+                <form class="row g-3">
+                    <div class="col-auto">
+                        <label for="inputPassword2" class="visually-hidden"></label>
+                        <input type="text" class="form-control" id="inputPassword2"/>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-secondary mb-3">Поиск</button>
+                    </div>
+                </form>
+
+                <div class="btn-group ps-1">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Профиль
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li><a class="dropdown-item" href="#">Настройки</a></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="btn btn-primary">Выход</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
-        <div class="btn-group">
-          <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Создать
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/model/create">Учебный модуль</a></li>
-            <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Папку
-            </button>
-          </ul>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/folder/create}" method="post">
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">НАЗВАНИЕ</label>
+                                <input name="title" type="text" class="form-control" id="title"
+                                       aria-describedby="emailHelp"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="descr" class="form-label">ОПИСАНИЕ</label>
+                                <input name="description" type="text" class="form-control" id="descr"/>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">СОЗДАТЬ</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
-      </div>
-
-      <div class="d-flex justify-content-end" style="height: 38px">
-
-        <form class="row g-3">
-          <div class="col-auto">
-            <label for="inputPassword2" class="visually-hidden"></label>
-            <input type="text" class="form-control" id="inputPassword2">
-          </div>
-          <div class="col-auto">
-            <button type="submit" class="btn btn-secondary mb-3">Поиск</button>
-          </div>
-        </form>
-
-        <div class="btn-group ps-1">
-          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Профиль
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Профиль</a></li>
-            <li><a class="dropdown-item" href="#">Настройки</a></li>
-            <li><a class="dropdown-item" href="/logout">Выход</a></li>
-          </ul>
-        </div>
-
-      </div>
     </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form th:action="@{/folder/create}" method="post">
-
-              <div class="mb-3">
-                <label for="title" class="form-label">НАЗВАНИЕ</label>
-                <input name="title" type="text" class="form-control" id="title" aria-describedby="emailHelp">
-              </div>
-
-              <div class="mb-3">
-                <label for="descr" class="form-label">ОПИСАНИЕ</label>
-                <input name="description" type="text" class="form-control" id="descr">
-              </div>
-
-              <button type="submit" class="btn btn-primary">СОЗДАТЬ</button>
-
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </header>
 </body>
 </html>

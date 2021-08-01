@@ -31,15 +31,15 @@
   }
 </style>
 <div class="wrapper">
-  <form th:action="@{/auth}"  method="post">
+  <form th:action="@{/login}"  method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input name="username" type="text" class="form-control" id="email" placeholder="name@example.com">
+      <input name="username" type="text" class="form-control" id="email" placeholder="name@example.com" />
 <!--      <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fs-6 text-danger fw-lighter">Incorrect date</p>-->
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input name="password" type="password" class="form-control" id="password" rows="3">
+      <input name="password" type="password" class="form-control" id="password" rows="3" />
 <!--      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fs-6 text-danger fw-lighter">Incorrect date</p>-->
     </div>
     <div class="col-auto">

@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -31,7 +33,12 @@ public class FolderController {
 
     @PostMapping("/create")
     public String createFolder(@AuthenticationPrincipal User user,
-                               Folder folder) {
+                               @Valid Folder folder,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "index";
+        }
+
         folderService.save(folder, user);
         return "index";
     }

@@ -29,27 +29,6 @@ public class User implements UserDetails {
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
 
-//    @OneToMany(mappedBy = "user",
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.REFRESH, CascadeType.PERSIST},
-//            fetch = FetchType.LAZY)
-//    private Set<LearnModel> models = new HashSet<>();
-
-//    @OneToMany(mappedBy = "user",
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//                    CascadeType.REFRESH, CascadeType.PERSIST},
-//            fetch = FetchType.LAZY)
-//    private Set<Folder> folders = new HashSet<>();
-
-//    @LazyCollection(LazyCollectionOption.FALSE)
-
-
-//    @OneToMany
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
-//    private List<Post> posts = new ArrayList<>();
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -62,22 +41,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return active;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return active;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return active;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "MODELS")
@@ -18,6 +19,7 @@ public class LearnModel {
     private long id;
 
     @Column(name = "name")
+    @NotBlank(message = "Title cannot be empty")
     private String name;
 
     @Column(name = "description")

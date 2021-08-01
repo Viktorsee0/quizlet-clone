@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class Folder {
     private long id;
 
     @Column(name = "title")
+    @NotBlank(message = "Title cannot be empty")
     private String title;
 
     @Column(name = "description")

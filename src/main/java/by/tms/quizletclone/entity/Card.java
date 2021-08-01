@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "CARDS")
@@ -18,9 +19,11 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Term cannot be empty")
     @Column(name = "term")
     private String term;
 
+    @NotBlank(message = "Definition cannot be empty")
     @Column(name = "definition")
     private String definition;
 
