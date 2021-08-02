@@ -51,7 +51,10 @@ public class FolderController {
     }
 
     @GetMapping("/show/{id}")
-    public String showFolder(@AuthenticationPrincipal User user, Model model, @PathVariable long id) {
+    public String showFolder(@AuthenticationPrincipal User user,
+                             Model model,
+                             @PathVariable long id) {
+
         Folder byId = folderService.getById(id);
         List<LearnModel> all = modelService.getAll(user, byId);
         model.addAttribute("folder", byId);

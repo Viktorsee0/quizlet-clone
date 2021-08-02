@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-    List<Folder> findAllByUserId(long id);
+    List<Folder> findAllByUserId(long userId);
 }

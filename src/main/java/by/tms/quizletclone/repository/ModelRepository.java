@@ -14,4 +14,7 @@ public interface ModelRepository extends JpaRepository<LearnModel, Long> {
 
     @Query("SELECT m FROM LearnModel m WHERE m.user.id =:userId AND m.folder.id =:folderId")
     List<LearnModel> findAllByUserIdAndFolderId(long userId, long folderId);
+
+    List<LearnModel> findAllByNameContaining(String name);
+    List<LearnModel> findAllByUserId(long userId);
 }

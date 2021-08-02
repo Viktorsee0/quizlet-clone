@@ -1,12 +1,10 @@
 package by.tms.quizletclone.service.impl;
 
 import by.tms.quizletclone.dto.ModelChangeDTO;
-import by.tms.quizletclone.entity.Card;
 import by.tms.quizletclone.entity.Folder;
 import by.tms.quizletclone.entity.LearnModel;
 import by.tms.quizletclone.entity.User;
 import by.tms.quizletclone.mapper.ModelChangeMapper;
-import by.tms.quizletclone.repository.CardRepository;
 import by.tms.quizletclone.repository.ModelRepository;
 import by.tms.quizletclone.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +12,21 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class ModelServiceImpl implements ModelService {
 
     private ModelRepository modelRepository;
-    private CardRepository cardRepository;
 
     @Autowired
-    public ModelServiceImpl(ModelRepository modelRepository, CardRepository cardRepository) {
+    public ModelServiceImpl(ModelRepository modelRepository) {
         this.modelRepository = modelRepository;
-        this.cardRepository = cardRepository;
     }
 
     @Override
     public void save(LearnModel learnModel, User user) {
+        learnModel.setId(0L);
         learnModel.setUser(user);
         modelRepository.save(learnModel);
     }
@@ -63,6 +59,18 @@ public class ModelServiceImpl implements ModelService {
         modelRepository.save(learnModel);
 
     }
+
+    @Override
+    public List<LearnModel> getAllByTitle(String title){
+
+       return modelRepository.findAllByNameContaining(title);
+    }
+
+    @Override
+    public List<LearnModel> getAllByUser(long id){
+        return modelRepository.findAllByUserId(id);
+    }
+
 
 
 }

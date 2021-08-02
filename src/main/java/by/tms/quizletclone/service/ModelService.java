@@ -21,4 +21,6 @@ public interface ModelService {
 
     void changeTitle(long mId, ModelChangeDTO dto);
 
+    List<LearnModel> getAllByTitle(String title);
+    List<LearnModel> getAllByUser(long id);
 }

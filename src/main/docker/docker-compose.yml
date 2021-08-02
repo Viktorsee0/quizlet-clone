@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  quizlet-clone:
+    image: 'viktorsee0/quizlet'
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    env_file:
+      - service.env
+  db:
+    image: 'postgres'
+    env_file:
+      - db.env

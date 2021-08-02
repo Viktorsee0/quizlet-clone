@@ -39,10 +39,10 @@
 
             <div class="d-flex justify-content-end" style="height: 38px">
 
-                <form class="row g-3">
+                <form th:action="@{/search}" method="post" class="row g-3">
                     <div class="col-auto">
                         <label for="inputPassword2" class="visually-hidden"></label>
-                        <input type="text" class="form-control" id="inputPassword2"/>
+                        <input name="title" type="text" class="form-control" id="inputPassword2"/>
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-secondary mb-3">Поиск</button>

@@ -46,7 +46,7 @@
         flex: 0 0 auto;
     }
 
-    .f{
+    .f {
         max-width: 30%;
     }
 
@@ -60,9 +60,16 @@
             <div>
                 <h4 th:text="*{name}"></h4>
                 <h5 th:text="*{description}"></h5>
+
+                <span th:if="${user.id == model.user.id}">
+                     <span th:if="${cards.size()}">
+                    <a th:href="@{/test/{mId}/{cId} (mId = *{id}, cId = ${cards.get(0).id})}"> Изучить </a>
+                    </span>
+                </span>
+
             </div>
 
-            <div>
+            <div th:if="${user.id == model.user.id}">
 
                 <a href="#" class="btn-primary" aria-current="true"
                    data-bs-toggle="modal" data-bs-target="#first">
@@ -109,7 +116,7 @@
 
         </div>
 
-        <form class="f" th:action="@{/model/addCard/{mId} (mId = ${model.id})}"
+        <form th:if="${user.id == model.user.id}" class="f" th:action="@{/model/addCard/{mId} (mId = ${model.id})}"
               th:object="${card}"
               method="POST"
               enctype="multipart/form-data">
@@ -152,11 +159,10 @@
                 <span th:text="${mCard.term}"></span>
                 <span> - </span>
                 <span th:text="${mCard.definition}"></span>
-                <a th:href="@{/model/{mId}/removeCard/{cId} (cId =${mCard.id}, mId =${model.id})}"
+                <a th:if="${user.id == model.user.id}" th:href="@{/model/{mId}/removeCard/{cId} (cId =${mCard.id}, mId =${model.id})}"
                    class="btn-close" aria-label="Close"></a>
             </li>
         </ul>
-
 
     </div>
     <div class="footer">
