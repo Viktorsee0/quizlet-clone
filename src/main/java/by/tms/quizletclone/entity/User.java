@@ -1,6 +1,8 @@
 package by.tms.quizletclone.entity;
 
 
+import by.tms.quizletclone.auth.entity.UserStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
@@ -16,18 +25,43 @@ import java.util.*;
 @Entity
 @Table(name = "USERS")
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String email;
-    private String password;
-    private boolean active;
-    private String activationCode;
 
-    @Enumerated(EnumType.STRING)
+    @Id
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = IDENTITY)
+    @Schema(example = "1")
+    private Long id;
+
+    @Schema(example = "Диана")
+    @NotNull
+    @NotBlank
+    private String firstName;
+
+    @Schema(example = "Шурыгина")
+    @NotNull @NotBlank
+    private String lastName;
+
+    @Schema(example = "example@gmail.com")
+    @NotNull @NotBlank
+    private String email;
+
+    @Schema(example = "123")
+    @Column(name = "password", nullable = false)
+    private String password;
+
+
+    @Schema(example = "ACTIVE")
+    @Enumerated(STRING)
+    @Column(name = "user_status", nullable = false)
+    private UserStatus userStatus;
+
+    @Enumerated(STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -41,22 +75,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return active;
+        return UserStatus.ACTIVE.equals(userStatus);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return active;
+        return UserStatus.ACTIVE.equals(userStatus);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return active;
+        return UserStatus.ACTIVE.equals(userStatus);
     }
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return UserStatus.ACTIVE.equals(userStatus);
     }
 
 }

@@ -25,9 +25,6 @@ public class LearnModel {
     @Column(name = "description")
     private String description;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "model_id")
-//    private List<Card> cards;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH},
             fetch = FetchType.EAGER)
@@ -41,12 +38,4 @@ public class LearnModel {
     @LazyCollection(LazyCollectionOption.FALSE)
     private Folder folder;
 
-
-//    public void addCard(Card card){
-//        if (cards == null){
-//            cards = new ArrayList<>();
-//        }
-//
-//        cards.add(card);
-//    }
 }
